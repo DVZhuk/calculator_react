@@ -1,24 +1,53 @@
-import logo from './logo.svg';
+import { useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import './App.css';
 
+import ElementsPlace from './components/elementsPlace/ElementsPlace';
+import ModeChange from './components/ModeChange';
+import ConstructorPlace from './components/constructorPlace/ConstructorPlace';
+import { BasketContext, ModeContext } from './context/context';
+
 function App() {
+  const [basket, setBasket] = useState([]);
+  const [mode, setMode] = useState([0, 1]);
+  const [display, setDisplay] = useState('0');
+  const [answerflag, setAnswerflag] = useState(false);
+  const [recalculation, setRecalculation] = useState(false);
+  const [dotflag, setDotflag] = useState(true);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main className="work-place">
+      <ModeContext.Provider value={{
+        mode,
+        setMode
+      }}>
+        <ModeChange />
+
+        <DndProvider backend={HTML5Backend}>
+
+          <BasketContext.Provider value={{
+            basket,
+            setBasket,
+            display,
+            setDisplay,
+            answerflag,
+            setAnswerflag,
+            recalculation,
+            setRecalculation,
+            dotflag,
+            setDotflag
+          }}>
+
+            <ElementsPlace />
+            <ConstructorPlace />
+
+          </BasketContext.Provider>
+
+        </DndProvider>
+
+      </ModeContext.Provider>
+      
+    </main>
   );
 }
 
